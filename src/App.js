@@ -24,6 +24,7 @@ class App extends Component {
             break;
             case('width'):
                 this.setState({widthValue: event.target.value});
+            break;
             case('slug'):
                 this.setState({slugValue: event.target.value});
             break;
@@ -45,6 +46,7 @@ class App extends Component {
                     width:this.state.widthValue,
                     widthValue: ''
                 })
+                break;
             case('slugForm'):
                 this.setState({
                     slug: this.state.slugValue,
@@ -66,8 +68,9 @@ class App extends Component {
                 <div className="content title" >
                     <div>Environment:
                       <select id="source" onChange={this.handleChange}>
-                        <option value="https://embed.radio.com/index.html">Production</option>
-                        <option value="https://embed-stg.radio.com/index.html">Stage</option>
+                        <option value="https://embed.radio.com/index.html" selected={source === 'https://embed.radio.com/index.html'} >Production</option>
+                        <option value="https://embed-stg.radio.com/index.html" selected={source === 'https://embed-stg.radio.com/index.html'} >Stage</option>
+                        <option value="http://local.radio.com:8080" selected={source === 'http://local.radio.com:8080'} >Local</option>
                       </select>
                     </div>
                     <div>Slug: <span id="sourceTitle">{slug}</span></div>
@@ -94,7 +97,7 @@ class App extends Component {
                     </div>
 
                 </div>
-                <div className="content"><iframe src={fullSrc} width={width} style={{height: '129px', width: widthStyle, border: '0'}}></iframe></div>
+                <div className="content"><iframe scrolling="no" src={fullSrc} width={width} style={{height: '145px', width: widthStyle, border: '0'}} title="Radio.com embedded player"></iframe></div>
                 <div className="content">Embed this: <strong>{`<iframe src="${source}?slug=${slug}"></iframe>`}</strong></div>
             </div>
         )

@@ -9,7 +9,7 @@
 
 
 .App {
-  text-align: center;
+  text-align: left;
   display:grid;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   align-items: center;
@@ -36,7 +36,7 @@
 #formWrapper {
   display:grid;
   grid-template-rows: 1fr 1fr;
-  grid-gap:48px;
+  grid-gap:16px;
 }
 
 @media only screen and (min-width: 1100px) {
@@ -50,4 +50,3 @@
     width:400px;
   }
 }
-

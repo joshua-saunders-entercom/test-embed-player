@@ -4,11 +4,14 @@ import './App.css';
 class App extends Component {
     constructor(props) {
         super (props)
+        //get params
         this.state = {
-            source: 'https://embed-player-stg.radio.com/index.html',
+            source: 'https://embed.radio.com/index.html',
             value: '',
             width: '100%',
-            widthValue:''
+            widthValue:'',
+            slug: 'radioalice',
+            stationId: ''
         }
     }
 
@@ -17,10 +20,12 @@ class App extends Component {
         console.log('handle change event, ', event.target.id)
         switch(id){
             case('source'):
-                this.setState({value: event.target.value});
+                this.setState({source: event.target.value});
             break;
             case('width'):
                 this.setState({widthValue: event.target.value});
+            case('slug'):
+                this.setState({slugValue: event.target.value});
             break;
         }
     }
@@ -40,6 +45,11 @@ class App extends Component {
                     width:this.state.widthValue,
                     widthValue: ''
                 })
+            case('slugForm'):
+                this.setState({
+                    slug: this.state.slugValue,
+                    slugValue: ''
+                })
         }
         event.preventDefault();
     }
@@ -48,20 +58,28 @@ class App extends Component {
 
 
     render(){
-        const { source, width } = this.state
+        const { source, width, slug } = this.state
+        const fullSrc = source + '?slug=' + slug
+        let widthStyle = width.indexOf('%') === -1 && width.indexOf('px') === -1 ? width + 'px' : width
         return (
             <div className="App">
                 <div className="content title" >
-                    <div>Iframe source is: <span id="sourceTitle">{source}</span></div>
-                    <div id="currentWidth">Current Width is: <span id="widthTitle">{width}</span></div>
+                    <div>Environment:
+                      <select id="source" onChange={this.handleChange}>
+                        <option value="https://embed.radio.com/index.html">Production</option>
+                        <option value="https://embed-stg.radio.com/index.html">Stage</option>
+                      </select>
+                    </div>
+                    <div>Slug: <span id="sourceTitle">{slug}</span></div>
+                    <div id="currentWidth">Current Width is: <span id="widthTitle">{widthStyle}</span></div>
                 </div>
                 <div className="content" id="formWrapper">
                     <div>
-                        <form id="sourceForm" id="sourceForm" onSubmit={this.handleSubmit}>
+                        <form id="slugForm" onSubmit={this.handleSubmit}>
                             <label>
-                            Update Source:
-                            <input id="source" type="text" value={this.state.value} onChange={this.handleChange} />
-                        </label>
+                                Update Slug:
+                                <input id="slug" type="text" value={this.state.slugValue} onChange={this.handleChange} />
+                            </label>
                             <input type="submit" value="Submit" />
                         </form>
                     </div>
@@ -74,9 +92,10 @@ class App extends Component {
                             <input type="submit" value="Submit" />
                         </form>
                     </div>
+
                 </div>
-                <div className="content"><iframe src={source} width={width}></iframe></div>
-                <div className="content">Embed this: <strong>{`<iframe src=${source} width=${width}></iframe>`}</strong></div>
+                <div className="content"><iframe src={fullSrc} width={width} style={{height: '129px', width: widthStyle, border: '0'}}></iframe></div>
+                <div className="content">Embed this: <strong>{`<iframe src="${source}?slug=${slug}"></iframe>`}</strong></div>
             </div>
         )
     }
